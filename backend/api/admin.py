@@ -33,6 +33,7 @@ class StudentAdmin(admin.ModelAdmin):
     search_fields = ['matric_number', 'user__full_name']
     list_filter = ['department']
     inlines = [LecturerRatingInline]
+    ordering = ['-gpa', 'id']
     
     def rating_count(self, obj):
         return obj.given_ratings.count()
@@ -42,6 +43,7 @@ class LecturerAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'average_rating', 'rating_count', 'assignment_count']
     search_fields = ['user__full_name']
     inlines = [LecturerRatingInline]
+    ordering = ['-average_rating']
     
     def rating_count(self, obj):
         return obj.rating_count

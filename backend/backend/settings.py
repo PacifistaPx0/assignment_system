@@ -174,6 +174,10 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
+JAZZMIN_SETTINGS = {
+    "custom_css": "css/admin_custom.css",
+}
+
 
 
 # Static files (CSS, JavaScript, Images)
