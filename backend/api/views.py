@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.db.models import Avg
 from .models import Student, Lecturer, LecturerRating, Assignment
 from .serializers import (
-    StudentSerializer, LecturerSerializer, LecturerRatingSerializer, AssignmentSerializer
+    BulkLecturerRatingCreateSerializer, StudentSerializer, LecturerSerializer, LecturerRatingSerializer, AssignmentSerializer
 )
 from .permissions import IsAdminOrLecturer, IsAdminOrStudent, IsStudent, IsLecturer
 
@@ -124,6 +124,34 @@ class SupervisorAssignedToStudentView(generics.RetrieveAPIView):
             return Response({"student_id": student_id, "supervisor": serializer.data}, status=status.HTTP_200_OK)
         
         return Response({"error": "No supervisor found for this student"}, status=status.HTTP_404_NOT_FOUND)
+    
+class BulkLecturerRatingCreateView(generics.CreateAPIView):
+    """
+    Allows a student to submit ratings for multiple lecturers in a single request.
+    Expected JSON payload:
+    {
+        "ratings": [
+            {"lecturer": 1, "rating": 5},
+            {"lecturer": 2, "rating": 4},
+            ...
+        ]
+    }
+    """
+    serializer_class = BulkLecturerRatingCreateSerializer
+    permission_classes = [IsAdminOrStudent]  # or your custom IsStudent permission if defined
+
+    def post(self, request, *args, **kwargs):
+        # Ensure the user is a student
+        if not hasattr(request.user, 'student'):
+            return Response({"detail": "Only students can submit ratings."},
+                            status=status.HTTP_403_FORBIDDEN)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        created_ratings = serializer.save()  # This returns a list of LecturerRating instances
+        return Response({
+            "detail": "Bulk ratings processed successfully",
+            "created_count": len(created_ratings)
+        }, status=status.HTTP_201_CREATED)
 
 
 

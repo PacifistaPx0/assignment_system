@@ -5,6 +5,7 @@ from .views import (
     LecturerListView, LecturerDetailView,
     LecturerRatingCreateView, RoundRobinApiView, AssignmentListview,
     StudentsAssignedToLecturerView, SupervisorAssignedToStudentView,
+    BulkLecturerRatingCreateView,
 )
 
 
@@ -22,6 +23,7 @@ urlpatterns = [
     path('lecturer/<int:lecturer_id>/students/', StudentsAssignedToLecturerView.as_view(), name='students-assigned-to-lecturer'),
 
     # Lecturer Ratings
+    path('rate_lecturers/', BulkLecturerRatingCreateView.as_view(), name='rating-bulk-create'),
     path('rate_lecturer/', LecturerRatingCreateView.as_view(), name='rating-create'),
 
     # Assignments

@@ -72,3 +72,35 @@ class AssignmentSerializer(serializers.ModelSerializer):
         model = Assignment
         fields = "__all__"
         read_only_fields = ['assigned_date']
+
+class LecturerRatingBulkItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LecturerRating
+        fields = ['lecturer', 'rating']
+        # lecturer is expected to be the lecturer ID
+
+class BulkLecturerRatingCreateSerializer(serializers.Serializer):
+    ratings = LecturerRatingBulkItemSerializer(many=True)
+
+    def create(self, validated_data):
+        ratings_data = validated_data.pop('ratings')
+        student = self.context['request'].user.student
+        created_ratings = []
+        for item in ratings_data:
+            lecturer = item['lecturer']
+            rating_value = item['rating']
+            # Use update_or_create to update if exists or create if not.
+            obj, created = LecturerRating.objects.update_or_create(
+                student=student,
+                lecturer=lecturer,
+                defaults={'rating': rating_value}
+            )
+            created_ratings.append(obj)
+        return created_ratings
+
+    def validate(self, attrs):
+        # Validate that there are no duplicate lecturer entries in the payload.
+        lecturers = [item['lecturer'] for item in attrs.get('ratings', [])]
+        if len(lecturers) != len(set(lecturers)):
+            raise serializers.ValidationError("Duplicate lecturer entries are not allowed.")
+        return attrs
