@@ -8,8 +8,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, RegistrationSerializer, UserSerializer
 
-class UserDetailView(generics.RetrieveAPIView):
-    """Users can view their profile"""
+
+    
+class UserDetailView(generics.RetrieveUpdateAPIView):
+    """
+    Retrieve and update (partial update via PATCH) the authenticated user's details.
+    """
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 

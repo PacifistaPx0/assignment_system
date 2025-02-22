@@ -2,14 +2,14 @@ from rest_framework import serializers
 from .models import Student, Lecturer, LecturerRating, Assignment
 from userauths.models import User
 
-class UserSerializer(serializers.ModelSerializer):
+class UserDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = ['id', 'full_name', 'email']  # Add other fields you need
 
 class StudentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = UserDetailsSerializer(read_only=True)
     has_rated = serializers.SerializerMethodField()
     
     class Meta:
@@ -27,7 +27,7 @@ class StudentSerializer(serializers.ModelSerializer):
         return False
 
 class LecturerSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = UserDetailsSerializer(read_only=True)
     average_rating = serializers.DecimalField(
         max_digits=3, 
         decimal_places=2, 
