@@ -9,7 +9,8 @@ from django.http import HttpResponse
 from django.db.models import Avg
 from .models import Student, Lecturer, LecturerRating, Assignment
 from .serializers import (
-    BulkLecturerRatingCreateSerializer, StudentSerializer, LecturerSerializer, LecturerRatingSerializer, AssignmentSerializer
+    BulkLecturerRatingCreateSerializer, StudentSerializer, LecturerSerializer, LecturerRatingSerializer, 
+    AssignmentSerializer
 )
 from .permissions import IsAdminOrLecturer, IsAdminOrStudent, IsStudent, IsLecturer
 

@@ -3,6 +3,7 @@ from .models import Student, Lecturer, LecturerRating, Assignment
 from userauths.models import User
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = ['id', 'full_name', 'email']  # Add other fields you need

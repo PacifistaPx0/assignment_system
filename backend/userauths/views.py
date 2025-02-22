@@ -6,9 +6,16 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django.contrib.auth import get_user_model
-from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, RegistrationSerializer
+from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, RegistrationSerializer, UserSerializer
 
+class UserDetailView(generics.RetrieveAPIView):
+    """Users can view their profile"""
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_object(self):
+        # Return the currently authenticated user
+        return self.request.user
 
 class RegistrationView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
