@@ -18,6 +18,9 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate(self, attrs):
         if attrs['new_password'] != attrs['new_password2']:
             raise serializers.ValidationError({"new_password": "The two password fields didn't match."})
+        
+        if attrs['old_password'] == attrs['new_password']:
+            raise serializers.ValidationError({"new_password": "new_password cannot be the same as old password"})
         return attrs
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

@@ -8,6 +8,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, RegistrationSerializer, UserSerializer
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 
     
 class UserDetailView(generics.RetrieveUpdateAPIView):
@@ -31,6 +34,15 @@ class LoginView(TokenObtainPairView):
 
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = ChangePasswordSerializer
+
+    @swagger_auto_schema(
+        request_body=ChangePasswordSerializer,
+        responses={
+            200: openapi.Response("Password updated successfully."),
+            400: openapi.Response("Bad request.")
+        }
+    )
 
     def post(self, request, *args, **kwargs):
         serializer = ChangePasswordSerializer(data=request.data)
