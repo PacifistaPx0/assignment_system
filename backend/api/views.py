@@ -19,25 +19,25 @@ class StudentListView(generics.ListAPIView):
     """Admin can view all students"""
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
 class StudentDetailView(generics.RetrieveAPIView):
     """Students can view their profile"""
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    permission_classes = [IsAdminOrStudent]
+    permission_classes = [IsAuthenticated]
 
 class LecturerListView(generics.ListAPIView):
     """Admin can view all lecturers"""
     queryset = Lecturer.objects.all()
     serializer_class = LecturerSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
 class LecturerDetailView(generics.RetrieveAPIView):
     """Lecturers can view their profile"""
     queryset = Lecturer.objects.all()
     serializer_class = LecturerSerializer
-    permission_classes = [IsAdminOrLecturer]
+    permission_classes = [IsAuthenticated]
 
 
 class LecturerRatingCreateView(generics.CreateAPIView):
@@ -53,7 +53,7 @@ class LecturerRatingCreateView(generics.CreateAPIView):
 class LecturerRatingsView(generics.ListAPIView):
     """View ratings for a specific lecturer"""
     serializer_class = LecturerRatingSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         lecturer_id = self.kwargs['lecturer_id']
