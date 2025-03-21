@@ -174,6 +174,12 @@ SIMPLE_JWT = {
 
 JAZZMIN_SETTINGS = {
     "custom_css": "css/admin_custom.css",
+    "site_title": "Student-Supervisor Assignment",
+    "site_header": "Student-Supervisor Assignment",
+    "site_brand": "Assignment System",
+    "welcome_sign": "Welcome to the Student-Supervisor Admin Panel",
+    "copyright": "Group 15",
+    "show_ui_builder": False,  # Hide UI customizer for production
 }
 
 
